@@ -1,4 +1,3 @@
-# app/controllers/comments_controller.rb
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_article
@@ -23,7 +22,7 @@ class CommentsController < ApplicationController
   private
 
   def set_article
-    @article = Article.find(params[:article_id])
+    @article = Article.includes(comments: :user).find(params[:article_id])
   end
 
   def comment_params

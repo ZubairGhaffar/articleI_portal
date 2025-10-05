@@ -15,9 +15,9 @@
                 </span>
               </div>
               <div>
-                <span class="badge bg-light text-dark">
-                  <i class="fas fa-comments"></i> <%= @article.comments.count %> comments
-                </span>
+               <span class="badge bg-light text-dark">
+  <i class="fas fa-comments"></i> <%= @article.comments_count %> comments
+</span>
               </div>
             </div>
           </div>
@@ -37,17 +37,17 @@
       <!-- Comments Section -->
       <section id="comments-section" class="card shadow-sm">
         <div class="card-header bg-white">
-          <h3 class="mb-0">
-            <i class="fas fa-comments text-primary"></i>
-            Comments (<%= @article.comments.count %>)
-          </h3>
+       <h3 class="mb-0">
+  <i class="fas fa-comments text-primary"></i>
+  Comments (<%= @article.comments_count %>)
+</h3>
         </div>
         
         <div class="card-body">
           <!-- Comments List -->
           <div class="comments-list mb-4">
             <% if @article.comments.any? %>
-              <% @article.comments.order(created_at: :desc).each do |comment| %>
+             <% @comments.each do |comment| %>
                 <div class="comment-card card mb-3">
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-2">

@@ -3,12 +3,16 @@ class ArticlesController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_article, only: [:show, :edit, :update, :destroy]
 
-  def index
-    @articles = Article.published.order(created_at: :desc).page(params[:page])
-  end
+def index
+  @articles = Article.published
+                     .includes(:user, :comments, images_attachments: :blob)
+                     .order(created_at: :desc)
+                     .page(params[:page])
+end
 
 def show
-  @article = Article.find(params[:id])
+  @article = Article.includes(:user, :comments, images_attachments: :blob)
+                    .find(params[:id])
   @comment = Comment.new
   @comments = @article.comments.includes(:user).order(created_at: :asc)
 end

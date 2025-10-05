@@ -1,8 +1,6 @@
 class Comment < ApplicationRecord
+  belongs_to :article, counter_cache: true
   belongs_to :user
-  belongs_to :article
-
+  
   validates :content, presence: true
-
-
 end
