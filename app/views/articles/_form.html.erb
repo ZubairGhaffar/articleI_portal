@@ -1,0 +1,38 @@
+<%= form_with model: article, local: true do |form| %>
+  <% if article.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(article.errors.count, "error") %> prohibited this article from being saved:</h4>
+      <ul>
+        <% article.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :title, class: "form-label" %>
+    <%= form.text_field :title, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :content, class: "form-label" %>
+    <%= form.text_area :content, class: "form-control", rows: 15, required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :images, class: "form-label" %>
+    <%= form.file_field :images, multiple: true, class: "form-control", accept: "image/*" %>
+    <div class="form-text">You can select multiple images</div>
+  </div>
+
+  <div class="mb-3 form-check">
+    <%= form.check_box :published, class: "form-check-input" %>
+    <%= form.label :published, "Publish this article", class: "form-check-label" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", articles_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>

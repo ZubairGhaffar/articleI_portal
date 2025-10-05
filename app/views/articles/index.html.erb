@@ -1,0 +1,164 @@
+<div class="row">
+  <div class="col-md-8">
+    <h1 class="mb-4">Latest Articles</h1>
+    
+    <% @articles.each do |article| %>
+      <div class="card article-card mb-5 shadow-sm">
+        <div class="card-body p-4">
+          <div class="row align-items-start">
+            <!-- Article Content -->
+            <div class="col-md-8">
+              <h4 class="card-title mb-3">
+                <%= link_to article.title, article, class: "article-title-link" %>
+              </h4>
+              <p class="card-text article-excerpt mb-4"><%= article.excerpt %></p>
+              
+              <div class="article-meta d-flex justify-content-between align-items-center mt-4 pt-3">
+                <div class="author-info">
+                  <small class="text-muted">
+                    <i class="fas fa-user"></i> By <%= article.user.username %> • 
+                    <i class="fas fa-clock"></i> <%= time_ago_in_words(article.created_at) %> ago
+                  </small>
+                </div>
+                <div class="engagement-info">
+                  <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-comments"></i> <%= article.comments.count %> comments
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Article Image -->
+            <div class="col-md-4">
+              <% if article.images.attached? %>
+                <div class="article-image-container">
+                  <%= image_tag article.images.first, class: "article-image img-fluid rounded" %>
+                </div>
+              <% else %>
+                <div class="article-image-placeholder bg-light rounded d-flex align-items-center justify-content-center">
+                  <i class="fas fa-newspaper text-muted fa-3x"></i>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="d-flex justify-content-center mt-5">
+      <%= paginate @articles %>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <% if user_signed_in? %>
+      <div class="card shadow-sm mb-4">
+        <div class="card-body text-center p-4">
+          <h4 class="card-title mb-3">Welcome back!</h4>
+          <p class="card-text mb-4">Ready to share your thoughts with our community?</p>
+          <%= link_to "Write New Article", new_article_path, class: "btn btn-primary btn-lg w-100" %>
+        </div>
+      </div>
+    <% else %>
+      <div class="card shadow-sm mb-4">
+        <div class="card-body text-center p-4">
+          <h4 class="card-title mb-3">Join our community</h4>
+          <p class="card-text mb-4">Sign up to write articles and join discussions.</p>
+          <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-success btn-lg w-100" %>
+        </div>
+      </div>
+    <% end %>
+    
+    <!-- Additional content can be added here if needed -->
+  </div>
+</div>
+
+<style>
+.article-card {
+  transition: transform 0.2s;
+  border: 1px solid #eaeaea;
+  min-height: 280px;
+}
+
+.article-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
+}
+
+.article-title-link {
+  color: #2c3e50;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.article-title-link:hover {
+  color: #3498db;
+  text-decoration: underline;
+}
+
+.article-excerpt {
+  color: #555;
+  line-height: 1.7;
+  font-size: 1.1rem;
+}
+
+.article-image-container {
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.article-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.article-image-placeholder {
+  height: 200px;
+  width: 100%;
+}
+
+.article-meta {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 15px;
+}
+
+.author-info i, .engagement-info i {
+  margin-right: 5px;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.card-header {
+  font-weight: 600;
+}
+
+.btn-lg {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+}
+
+/* Responsive adjustments */
+
+@media (max-width: 768px) {
+  .article-card .card-body {
+    padding: 1.5rem !important;
+  }
+  
+  .article-image-container,
+  .article-image-placeholder {
+    height: 180px;
+    margin-top: 1rem;
+  }
+  
+  .article-title-link {
+    font-size: 1.3rem;
+  }
+}
+</style>

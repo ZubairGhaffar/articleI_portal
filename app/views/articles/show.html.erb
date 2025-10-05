@@ -1,0 +1,242 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8">
+      <!-- Article Content -->
+      <article class="card shadow-sm mb-4">
+        <div class="card-body">
+          <h1 class="card-title mb-3"><%= @article.title %></h1>
+          
+          <div class="article-meta mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <span class="text-muted">
+                  <i class="fas fa-user"></i> By <%= @article.user.username %> • 
+                  <i class="fas fa-clock"></i> <%= time_ago_in_words(@article.created_at) %> ago
+                </span>
+              </div>
+              <div>
+                <span class="badge bg-light text-dark">
+                  <i class="fas fa-comments"></i> <%= @article.comments.count %> comments
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <% if @article.images.attached? %>
+            <div class="article-main-image mb-4">
+              <%= image_tag @article.images.first, class: "img-fluid rounded w-100", style: "max-height: 400px; object-fit: cover;" %>
+            </div>
+          <% end %>
+
+          <div class="article-content">
+            <%= simple_format(@article.content) %>
+          </div>
+        </div>
+      </article>
+
+      <!-- Comments Section -->
+      <section id="comments-section" class="card shadow-sm">
+        <div class="card-header bg-white">
+          <h3 class="mb-0">
+            <i class="fas fa-comments text-primary"></i>
+            Comments (<%= @article.comments.count %>)
+          </h3>
+        </div>
+        
+        <div class="card-body">
+          <!-- Comments List -->
+          <div class="comments-list mb-4">
+            <% if @article.comments.any? %>
+              <% @article.comments.order(created_at: :desc).each do |comment| %>
+                <div class="comment-card card mb-3">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                      <div class="comment-author">
+                        <strong><%= comment.user.username %></strong>
+                        <small class="text-muted ms-2">
+                          <i class="fas fa-clock"></i> <%= time_ago_in_words(comment.created_at) %> ago
+                        </small>
+                      </div>
+                      <% if user_signed_in? && current_user == comment.user %>
+                        <div class="comment-actions">
+                          <%= button_to comment_path(comment), 
+                                method: :delete, 
+                                class: "btn btn-sm btn-outline-danger",
+                                data: { confirm: "Are you sure you want to delete this comment?" } do %>
+                            <i class="fas fa-trash"></i>
+                          <% end %>
+                        </div>
+                      <% end %>
+                    </div>
+                    <div class="comment-content">
+                      <%= simple_format(comment.content) %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <div class="text-center py-4">
+                <i class="fas fa-comments fa-3x text-muted mb-3"></i>
+                <p class="text-muted">No comments yet. Be the first to comment!</p>
+              </div>
+            <% end %>
+          </div>
+
+          <!-- Add Comment Form -->
+          <% if user_signed_in? %>
+            <div class="add-comment-form">
+              <h5 class="mb-3">Add a Comment</h5>
+              <%= form_with model: [@article, @comment], local: true, class: "comment-form" do |form| %>
+                <div class="mb-3">
+                  <%= form.text_area :content, 
+                        class: "form-control", 
+                        rows: 4, 
+                        placeholder: "Write your comment here...",
+                        required: true %>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <%= form.submit "Post Comment", class: "btn btn-primary" %>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="alert alert-info text-center">
+              <p class="mb-2">Please <%= link_to "sign in", new_user_session_path %> to leave a comment.</p>
+              <small>Don't have an account? <%= link_to "Sign up here", new_user_registration_path %></small>
+            </div>
+          <% end %>
+        </div>
+      </section>
+    </div>
+
+    <div class="col-md-4">
+      <!-- Sidebar Content -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-body text-center">
+          <%= link_to "← Back to Articles", articles_path, class: "btn btn-outline-secondary mb-3" %>
+          
+          <% if user_signed_in? %>
+            <% if current_user == @article.user %>
+              <div class="d-grid gap-2">
+                <%= link_to "Edit Article", edit_article_path(@article), class: "btn btn-warning" %>
+                <%= button_to "Delete Article", @article, 
+                      method: :delete, 
+                      class: "btn btn-danger",
+                      data: { confirm: "Are you sure you want to delete this article?" } %>
+              </div>
+            <% else %>
+              <%= link_to "Write Your Own Article", new_article_path, class: "btn btn-primary w-100" %>
+            <% end %>
+          <% else %>
+            <%= link_to "Sign Up to Comment", new_user_registration_path, class: "btn btn-success w-100" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.article-card {
+  transition: transform 0.2s;
+  border: 1px solid #eaeaea;
+  min-height: 280px;
+}
+
+.article-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
+}
+
+.article-title-link {
+  color: #2c3e50;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.article-title-link:hover {
+  color: #3498db;
+  text-decoration: underline;
+}
+
+.article-excerpt {
+  color: #555;
+  line-height: 1.7;
+  font-size: 1.1rem;
+}
+
+.article-image-container {
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.article-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.article-image-placeholder {
+  height: 200px;
+  width: 100%;
+}
+
+.article-meta {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 15px;
+}
+
+.author-info i, .engagement-info i {
+  margin-right: 5px;
+}
+
+/* Comments Styles */
+.comment-card {
+  border-left: 4px solid #3498db;
+  transition: all 0.2s;
+}
+
+.comment-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.comment-content {
+  line-height: 1.6;
+  color: #333;
+}
+
+.comment-form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .article-card .card-body {
+    padding: 1.5rem !important;
+  }
+  
+  .article-image-container,
+  .article-image-placeholder {
+    height: 180px;
+    margin-top: 1rem;
+  }
+  
+  .article-title-link {
+    font-size: 1.3rem;
+  }
+  
+  .comment-actions {
+    margin-top: 0.5rem;
+  }
+}
+</style>

@@ -1,0 +1,38 @@
+<!-- app/views/articles/my_articles.html.erb -->
+<h1>My Articles</h1>
+
+<div class="mb-3">
+  <%= link_to "Write New Article", new_article_path, class: "btn btn-primary" %>
+</div>
+
+<% if @articles.any? %>
+  <div class="list-group">
+    <% @articles.each do |article| %>
+      <div class="list-group-item">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">
+            <%= link_to article.title, article %>
+            <% unless article.published? %>
+              <span class="badge bg-secondary">Draft</span>
+            <% end %>
+          </h5>
+          <small><%= time_ago_in_words(article.created_at) %> ago</small>
+        </div>
+        <p class="mb-1"><%= article.excerpt(100) %></p>
+        <div class="btn-group btn-group-sm">
+          <%= link_to "Edit", edit_article_path(article), class: "btn btn-outline-primary" %>
+          <%= link_to "Delete", article, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-4">
+    <%= paginate @articles %>
+  </div>
+<% else %>
+  <div class="alert alert-info">
+    You haven't written any articles yet. 
+    <%= link_to "Write your first article", new_article_path %>!
+  </div>
+<% end %>

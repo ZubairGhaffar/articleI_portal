@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ArticlePortal</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    
+    <%= javascript_importmap_tags %>
+    
+    <!-- Remove stylesheet_link_tag completely -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+      .article-content {
+        line-height: 1.8;
+        font-size: 1.1rem;
+      }
+
+      .article-content p {
+        margin-bottom: 1.5rem;
+      }
+
+      .comment {
+        transition: background-color 0.2s;
+      }
+
+      .comment:hover {
+        background-color: #f8f9fa;
+      }
+
+      .navbar-brand {
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
+
+      .card {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border: 1px solid #e9ecef;
+      }
+
+      .card-title a {
+        text-decoration: none;
+        color: #212529;
+      }
+
+      .card-title a:hover {
+        color: #0d6efd;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <%= link_to "ArticlePortal", root_path, class: "navbar-brand" %>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="navbar-nav ms-auto">
+        <% if user_signed_in? %>
+          <%= link_to "Write Article", new_article_path, class: "nav-link" %>
+          <%= link_to "My Articles", my_articles_path, class: "nav-link" %>
+          <%= button_to "Logout", destroy_user_session_path, method: :delete, 
+    class: "btn btn-link nav-link border-0 bg-transparent p-0 mt-2 ml-3 text-start", 
+    form_class: "d-inline" %>
+        <% else %>
+          <%= link_to "Login", new_user_session_path, class: "nav-link" %>
+          <%= link_to "Sign Up", new_user_registration_path, class: "nav-link" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>
+
+    <div class="container mt-4">
+      <% if notice %>
+        <div class="alert alert-success alert-dismissible fade show">
+          <%= notice %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% end %>
+      <% if alert %>
+        <div class="alert alert-danger alert-dismissible fade show">
+          <%= alert %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
