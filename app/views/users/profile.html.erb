@@ -1,0 +1,120 @@
+<!-- app/views/users/profile.html.erb -->
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title mb-0">My Profile</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <% if current_user.avatar.attached? %>
+              <%= image_tag current_user.avatar, class: "img-fluid rounded-circle mb-3", style: "width: 150px; height: 150px; object-fit: cover;" %>
+            <% else %>
+              <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 150px; height: 150px;">
+                <i class="fas fa-user fa-3x text-secondary"></i>
+              </div>
+            <% end %>
+            
+            <%= link_to edit_user_registration_path, class: "btn btn-primary btn-sm" do %>
+              <i class="fas fa-edit me-1"></i>Edit Profile
+            <% end %>
+          </div>
+          
+          <div class="col-md-8">
+            <div class="row mb-3">
+              <div class="col-sm-4">
+                <strong>Name:</strong>
+              </div>
+              <div class="col-sm-8">
+                <%= current_user.name %>
+              </div>
+            </div>
+            
+
+            
+            <div class="row mb-3">
+              <div class="col-sm-4">
+                <strong>Email:</strong>
+              </div>
+              <div class="col-sm-8">
+                <%= current_user.email %>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-sm-4">
+                <strong>Phone:</strong>
+              </div>
+              <div class="col-sm-8">
+                <%= current_user.phone_number || "Not provided" %>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-sm-4">
+                <strong>Member since:</strong>
+              </div>
+              <div class="col-sm-8">
+                <%= current_user.created_at.strftime("%B %d, %Y") %>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-sm-4">
+                <strong>Articles written:</strong>
+              </div>
+              <div class="col-sm-8">
+                <%= current_user.articles.count %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+                        <li class="nav-item">
+    <%= link_to "My Subscriptions", my_subscriptions_path, class: "nav-link" %>
+  </li>
+        
+        <hr>
+        
+        <!-- Danger Zone -->
+        <div class="mt-4">
+          <h5 class="text-danger">Danger Zone</h5>
+          <div class="alert alert-warning">
+            <p class="mb-2"><strong>Warning:</strong> These actions are irreversible.</p>
+            <%= button_to "Delete My Account", registration_path(current_user), 
+                  method: :delete, 
+                  data: { confirm: "Are you sure? This will permanently delete your account and all your articles!" }, 
+                  class: "btn btn-danger btn-sm" %>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- User's Articles -->
+    <div class="card mt-4">
+      <div class="card-header">
+        <h5 class="card-title mb-0">My Recent Articles</h5>
+      </div>
+      <div class="card-body">
+        <% if @articles.any? %>
+          <div class="list-group">
+            <% @articles.limit(5).each do |article| %>
+              <%= link_to article.title, article, class: "list-group-item list-group-item-action" %>
+            <% end %>
+          </div>
+          <% if @articles.count > 5 %>
+            <div class="mt-3 text-center">
+              <%= link_to "View All Articles", my_articles_path, class: "btn btn-outline-primary" %>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-muted">You haven't written any articles yet.</p>
+          <%= link_to "Write Your First Article", new_article_path, class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

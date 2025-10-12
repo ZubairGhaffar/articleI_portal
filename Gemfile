@@ -10,12 +10,19 @@ gem "turbo-rails"
 gem "stimulus-rails"
 
 
+
+gem "letter_opener"
+
+gem "dotenv-rails", groups: [ :development, :test ]
+
+
+
 # Essential gems for your app
-gem 'devise'
-gem 'image_processing', '~> 1.2'
-gem 'mini_magick'
-gem 'friendly_id'
-gem 'kaminari'
+gem "devise"
+gem "image_processing", "~> 1.2"
+gem "mini_magick"
+gem "friendly_id"
+gem "kaminari"
 
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -42,3 +49,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "cssbundling-rails", "~> 1.4"

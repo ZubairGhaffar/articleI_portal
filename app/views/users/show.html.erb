@@ -1,0 +1,18 @@
+<!-- app/views/users/show.html.erb -->
+<div class="profile">
+  <h1>Profile</h1>
+  
+  <% if current_user.avatar.attached? %>
+    <%= image_tag current_user.avatar, class: "avatar-large" %>
+  <% else %>
+    <div class="avatar-placeholder">No image</div>
+  <% end %>
+  
+  <p><strong>Name:</strong> <%= current_user.name %></p>
+  <p><strong>Username:</strong> <%= current_user.username %></p>
+  <p><strong>Email:</strong> <%= current_user.email %></p>
+  <p><strong>Phone:</strong> <%= current_user.phone_number %></p>
+
+  <%= link_to "Edit Profile", edit_user_registration_path, class: "btn btn-primary" %>
+  <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+</div>

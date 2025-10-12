@@ -1,0 +1,13 @@
+New comment on your article! 
+
+Hello <%= @article_author.name %>,
+
+<%= @commenter.name %> has commented on your article "<%= @article.title %>".
+
+Comment: "<%= @comment.content %>"
+
+View the comment: <%= article_url(@article, anchor: "comment-#{@comment.id}") %>
+
+---
+Keep the conversation going!
+The Article Portal Team

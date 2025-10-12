@@ -1,0 +1,15 @@
+You have a new subscriber! 
+
+Hello <%= @author.name %>,
+
+<%= @subscriber.name %> has just subscribed to your content on our platform.
+
+Your current subscriber count: <%= @author.subscribers.count %>
+
+Keep creating amazing content! Your subscribers will be notified when you publish new articles.
+
+View your profile: <%= public_profile_user_url(@author) %>
+
+---
+Happy writing!
+The Article Portal Team

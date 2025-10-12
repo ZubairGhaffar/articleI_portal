@@ -1,0 +1,19 @@
+New Article from <%= @author.name %>! 📝
+
+Hello <%= @subscriber.name %>,
+
+<%= @author.name %> just published a new article that you might be interested in:
+
+"<%= @article.title %>"
+
+<%= truncate(@article.content, length: 200, separator: ' ') %>
+
+Read the full article: <%= article_url(@article) %>
+
+---
+Note: You're receiving this email because you subscribed to <%= @author.name %>'s content.
+Manage your subscriptions: <%= my_subscriptions_url %>
+
+---
+Happy reading!
+The Article Portal Team
